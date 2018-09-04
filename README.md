@@ -1,0 +1,3 @@
+# Patterns
+
+Remembering some development patterns... 
