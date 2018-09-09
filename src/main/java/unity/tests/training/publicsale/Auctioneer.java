@@ -23,16 +23,20 @@ public class Auctioneer {
         getLargers(sale);
     }
 
-    private void getLargers(PublicSale leilao) {
+    private void getLargers(PublicSale publicSale) {
 
-        larger = new ArrayList<>(leilao.getProposes());
+        larger = new ArrayList<>(publicSale.getProposes());
 
         Collections.sort(larger, (o1, o2) -> {
-            if (o1.getValue() < o2.getValue()) return 1;
-            if (o1.getValue() > o2.getValue()) return -1;
+            if (o1.getValue() < o2.getValue()) {
+                return 1;
+            }
+            if (o1.getValue() > o2.getValue()) {
+                return -1;
+            }
             return 0;
         });
-        larger = larger.subList(0, 3);
+        larger = larger.subList(0, larger.size() > 3 ? 3 : larger.size());
     }
 
     public List<Throw> getThreeLargers() {
