@@ -1,87 +1,35 @@
 package unity.tests.training.publicsale;
 
-import org.junit.Before;
 import org.junit.Test;
 
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class PublicSaleTest {
 
-    private double DELTA = 0.0001;
+    private static double DELTA = 0.00001;
 
-    private Customer john;
-    private Customer yosef;
-    private Customer mary;
-    private PublicSale publicSale;
+    @Test
+    public void it_ShouldReceiveAThrow() {
 
+        PublicSale publicSale = new PublicSale("Some very expense item");
+        assertEquals(0, publicSale.getThrows().size());
 
-    @Before
-    public void setUp() {
-        john = new Customer("John");
-        yosef = new Customer("Yosef");
-        mary = new Customer("Mary");
-        publicSale = new PublicSale("A new video game");
+        publicSale.makeAThrow(new Throw(new Customer("Ramon Galdez"), 5000.55));
+        assertEquals(1, publicSale.getThrows().size());
+        assertEquals(5000.55, publicSale.getThrows().get(0).getValue(), 0.00001);
     }
 
     @Test
-    public void it_GetTheHigherThrow_WhenAPublicSalesOpens() {
+    public void it_ShouldReceiveManyThrows() {
 
-        publicSale.makeAThrow(new Throw(john, 250));
-        publicSale.makeAThrow(new Throw(mary, 300));
-        publicSale.makeAThrow(new Throw(yosef, 400));
+        PublicSale publicSale = new PublicSale("Some very expense item");
+        publicSale.makeAThrow(new Throw(new Customer("Xespirito"), 4000.55));
+        publicSale.makeAThrow(new Throw(new Customer("Ramon Galdez"), 5000.55));
 
-        Auctioneer auctioneer = new Auctioneer();
-        auctioneer.evaluate(publicSale);
-
-        assertEquals(400, auctioneer.getLargerThrow(), DELTA);
+        assertEquals(2, publicSale.getThrows().size());
+        assertEquals(4000.55, publicSale.getThrows().get(0).getValue(), DELTA);
+        assertEquals(5000.55, publicSale.getThrows().get(1).getValue(), DELTA);
     }
 
-    @Test
-    public void it_GetTheThreeHigherThrow_WhenReceiverAnOrderingAscThrows() {
-
-        publicSale.makeAThrow(new Throw(john, 100));
-        publicSale.makeAThrow(new Throw(mary, 200));
-        publicSale.makeAThrow(new Throw(john, 300));
-        publicSale.makeAThrow(new Throw(mary, 400));
-
-        Auctioneer auctioneer = new Auctioneer();
-        auctioneer.evaluate(publicSale);
-
-        List<Throw> largers = auctioneer.getThreeLargers();
-
-        assertEquals(3, largers.size());
-        assertEquals(400, largers.get(0).getValue(), DELTA);
-        assertEquals(300, largers.get(1).getValue(), DELTA);
-        assertEquals(200, largers.get(2).getValue(), DELTA);
-    }
-
-    @Test
-    public void it_GetsAllThrows_WhenHasLessThanThreeThrows() {
-
-        publicSale.makeAThrow(new Throw(john, 100));
-        publicSale.makeAThrow(new Throw(mary, 200));
-
-        Auctioneer auctioneer = new Auctioneer();
-        auctioneer.evaluate(publicSale);
-
-        List<Throw> largers = auctioneer.getThreeLargers();
-
-        assertEquals(2, largers.size());
-        assertEquals(200, largers.get(0).getValue(), DELTA);
-        assertEquals(100, largers.get(1).getValue(), DELTA);
-    }
-
-    @Test
-    public void it_GetAnEmptyList_WhenHasNoThrows() {
-
-        Auctioneer auctioneer = new Auctioneer();
-        auctioneer.evaluate(publicSale);
-
-        List<Throw> largers = auctioneer.getThreeLargers();
-
-        assertEquals(0, largers.size());
-    }
 
 }

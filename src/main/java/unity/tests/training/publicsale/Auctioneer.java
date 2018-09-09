@@ -11,7 +11,7 @@ public class Auctioneer {
     private List<Throw> larger;
 
     public void evaluate(PublicSale sale) {
-        for (Throw athrow : sale.getProposes()) {
+        for (Throw athrow : sale.getThrows()) {
             if (athrow.getValue() > greater) {
                 greater = athrow.getValue();
             }
@@ -25,7 +25,7 @@ public class Auctioneer {
 
     private void getLargers(PublicSale publicSale) {
 
-        larger = new ArrayList<>(publicSale.getProposes());
+        larger = new ArrayList<>(publicSale.getThrows());
 
         Collections.sort(larger, (o1, o2) -> {
             if (o1.getValue() < o2.getValue()) {
