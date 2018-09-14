@@ -5,7 +5,6 @@ import java.util.List;
 
 public class PaymentGenerator {
 
-
     private PaymentRepository payments;
     private Auctioneer auctioneer;
     private Timer timer;
